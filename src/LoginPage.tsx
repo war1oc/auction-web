@@ -1,29 +1,37 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TextInput, PasswordInput, Button, Paper, Title, Text, Container } from '@mantine/core';
-import { login } from './api';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  TextInput,
+  PasswordInput,
+  Button,
+  Paper,
+  Title,
+  Text,
+  Container,
+} from "@mantine/core";
+import { login } from "./api";
 
 interface LoginPageProps {
   setIsAuthenticated: (value: boolean) => void;
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({ setIsAuthenticated }) => {
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const response = await login(identifier, password);
-      localStorage.setItem('token', response.jwt);
-      localStorage.setItem('user', JSON.stringify(response.user));
+      localStorage.setItem("token", response.jwt);
+      localStorage.setItem("user", JSON.stringify(response.user));
       setIsAuthenticated(true); // Update the authentication state
-      navigate('/');
+      navigate("/");
     } catch (err) {
       console.log(err);
-      setError('Invalid credentials');
+      setError("Invalid credentials");
     }
   };
 
@@ -51,7 +59,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ setIsAuthenticated }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {error && <Text c="red" size="sm" mt="sm">{error}</Text>}
+          {error && (
+            <Text c="red" size="sm" mt="sm">
+              {error}
+            </Text>
+          )}
           <Button type="submit" fullWidth mt="xl">
             Sign in
           </Button>
